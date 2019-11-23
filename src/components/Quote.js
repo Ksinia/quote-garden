@@ -5,27 +5,31 @@ class Quote extends Component {
   static propTypes = {
     quoteText: PropTypes.string.isRequired,
     quoteAuthor: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired
-  };
-
-  state = {
-    liked: null
+    id: PropTypes.string.isRequired,
+    liked: PropTypes.string.isRequired,
+    setLiked: PropTypes.func.isRequired,
+    setDisliked: PropTypes.func.isRequired
   };
 
   handleLike() {
-    this.setState({ liked: true, style: { color: "green" } }); //style should be an object
+    this.props.setLiked(this.props.id);
+    // this.setState({ liked: "yes", style: { color: "green" } }); //style should be an object
   }
   handleDislike() {
-    this.setState({
-      liked: false,
-      style: { color: "red", textDecoration: "line-through" }
-    });
+    this.props.setDisliked(this.props.id);
   }
 
   render() {
+    let style = {};
+    if (this.props.liked === "yes") {
+      style = { color: "green" };
+    } else if (this.props.liked === "no") {
+      style = { color: "red", textDecoration: "line-through" };
+    }
+
     return (
       <div key={this.props.id}>
-        <div style={this.state.style}>
+        <div style={style}>
           <p className="quote-text">{this.props.quoteText}</p>
           <p className="quote-author">By: {this.props.quoteAuthor}</p>
         </div>
