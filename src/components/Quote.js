@@ -13,7 +13,6 @@ class Quote extends Component {
 
   handleLike() {
     this.props.setLiked(this.props.id);
-    // this.setState({ liked: "yes", style: { color: "green" } }); //style should be an object
   }
   handleDislike() {
     this.props.setDisliked(this.props.id);
@@ -22,7 +21,7 @@ class Quote extends Component {
   render() {
     let style = {};
     if (this.props.liked === "yes") {
-      style = { color: "green" };
+      style = { color: "green" }; //style is just an object
     } else if (this.props.liked === "no") {
       style = { color: "red", textDecoration: "line-through" };
     }

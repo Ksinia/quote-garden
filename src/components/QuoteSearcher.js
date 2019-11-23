@@ -4,18 +4,22 @@ import Quote from "./Quote";
 class QuoteSearcher extends Component {
   state = {
     quotes: [],
-    fetching: true
+    fetching: false,
+    keyword: "",
+    searched: false
   };
 
-  componentDidMount() {
-    fetch("https://quote-garden.herokuapp.com/quotes/search/tree")
+  search(keyword) {
+    this.setState({ ...this.state, fetching: true });
+    fetch(`https://quote-garden.herokuapp.com/quotes/search/${keyword}`)
       .then(response => response.json())
       .then(data => {
         this.setState({
           quotes: data.results.map(quote => {
             return { ...quote, liked: "unknown" };
           }),
-          fetching: false
+          fetching: false,
+          searched: true
         });
       })
       .catch(console.error);
@@ -46,6 +50,13 @@ class QuoteSearcher extends Component {
     });
   };
 
+  handleChange(event) {
+    this.setState({
+      ...this.state,
+      keyword: event.target.value
+    });
+  }
+
   render() {
     const liked = this.state.quotes.filter(quote => quote.liked === "yes")
       .length;
@@ -54,12 +65,23 @@ class QuoteSearcher extends Component {
     return (
       <div>
         <h1>Quotes</h1>
+        <input
+          value={this.state.keyword}
+          onChange={event => {
+            this.handleChange(event);
+          }}
+          placeholder="Enter a keyword"
+        ></input>
+        <button onClick={() => this.search(this.state.keyword)}>Search</button>
         <p style={{ fontWeight: "bold" }}>
           Liked: {liked} / Disliked: {disliked}
         </p>
         <div className="quotes">
           {this.state.fetching && <p>Loading...</p>}
-          {!this.state.fentching &&
+          {!this.state.fetching &&
+            this.state.quotes.length === 0 &&
+            this.state.searched && <p>No results</p>}
+          {!this.state.fetching &&
             this.state.quotes.map(quote => {
               return (
                 <Quote
