@@ -84,21 +84,25 @@ class QuoteSearcher extends Component {
           placeholder="Enter a keyword"
         ></input>
         <button onClick={() => this.search(this.state.keyword)}>Search</button>
-        <p style={{ fontWeight: "bold" }}>
-          Found {this.state.quotes.length} quotes by{" "}
-          {
-            this.state.quotes.reduce((listOfAuthors, quote) => {
-              if (!listOfAuthors.includes(quote.quoteAuthor)) {
-                listOfAuthors.push(quote.quoteAuthor);
-              }
-              return listOfAuthors;
-            }, []).length
-          }{" "}
-          authors
-        </p>
-        <p style={{ fontWeight: "bold" }}>
-          Liked: {liked} / Disliked: {disliked}
-        </p>
+        {this.state.searched && !this.state.fetching && (
+          <p style={{ fontWeight: "bold" }}>
+            Found {this.state.quotes.length} quotes by{" "}
+            {
+              this.state.quotes.reduce((listOfAuthors, quote) => {
+                if (!listOfAuthors.includes(quote.quoteAuthor)) {
+                  listOfAuthors.push(quote.quoteAuthor);
+                }
+                return listOfAuthors;
+              }, []).length
+            }{" "}
+            authors
+          </p>
+        )}
+        {this.state.searched && !this.state.fetching && (
+          <p style={{ fontWeight: "bold" }}>
+            Liked: {liked} / Disliked: {disliked}
+          </p>
+        )}
         <div className="quotes">
           {this.state.fetching && <p>Loading...</p>}
           {!this.state.fetching &&
