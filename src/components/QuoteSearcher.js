@@ -98,11 +98,13 @@ class QuoteSearcher extends Component {
             authors
           </p>
         )}
-        {this.state.searched && !this.state.fetching && (
-          <p style={{ fontWeight: "bold" }}>
-            Liked: {liked} / Disliked: {disliked}
-          </p>
-        )}
+        {this.state.searched &&
+          !this.state.fetching &&
+          this.state.quotes.length > 0 && (
+            <p style={{ fontWeight: "bold" }}>
+              Liked: {liked} / Disliked: {disliked}
+            </p>
+          )}
         <div className="quotes">
           {this.state.fetching && <p>Loading...</p>}
           {!this.state.fetching &&
